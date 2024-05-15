@@ -1,51 +1,48 @@
 #include "lists.h"
 
-listint_t reverse_list(listint_t *head)
-{
-	listint_t *prev = NULL;
-
-	while(head != NULL)
-	{
-		listint_t *next = head->next;
-		head->next = prev;
-		prev = head;
-		head = next;
-	}
-
-	return prev;
-}
-
+/**
+ * is_palindrome - tests if linked lists is palindrome
+ * @head: address of pointer to list
+ * Return: 1 is palindrome else 0
+ */
 int is_palindrome(listint_t **head)
 {
-	if (head == NULL)
-	{
-		return 1;
-	}
+	listint_t *slow = *head, *fast = *head, *node, *prev;
+	int failed = 0;
 
-	listint_t *slow = head;
-	listint_t *fast = head;
-
-	while (fast->next != NULL && fast->next->next != NULL)
+	while (fast != NULL && fast->next != NULL)
 	{
-		slow = slow->next;
 		fast = fast->next->next;
+		slow = slow->next;
 	}
-	
-	listint_t *second_half = reverse_list(slow->next);
-	listint_t *p1 = head;
-	listint_t *p2 = second_half;
-
-	while (p2 != NULL)
+	node = slow;
+	prev = NULL;
+	while (node)
 	{
-		if (p1->n != p2->n)
-		{
-			return 0;
-		}
-		p1 = p1->next;
-		p2 = p2->next;
+		fast = node->next;
+		node->next = prev;
+		prev = node;
+		node = fast;
 	}
-
-	slow->next = reverse_list(second_half);
-
-	return 1;
+	fast = *head;
+	node = prev;
+	while (prev)
+	{
+		if (fast->n != prev->n)
+		{
+			failed = 1;
+			break;
+		}
+		fast = fast->next;
+		prev = prev->next;
+	}
+	prev = NULL;
+	while (node)
+	{
+		fast = node->next;
+		node->next = prev;
+		prev = node;
+		node = fast;
+	}
+	return (!failed);
 }

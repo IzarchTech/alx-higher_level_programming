@@ -1,3 +1,7 @@
 #!/usr/bin/python3
-for c in range(ord('a'), ord('z')+1):
-    print('{}'.format(chr(c)), end='')
+"""
+A program that prints the ASCII alphabet, in lowercase,
+not followed by a new line.
+"""
+for i in range(97, 123):
+    print("{:c}".format(i), end='')
